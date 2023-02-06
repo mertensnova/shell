@@ -30,15 +30,15 @@ func main() {
 	})
 
 	// Put all the number in an array
-	sent_to := []string{"number","num","num","num"} 
+	sent_to := []string{"+966558581107"} 
 
 
 	// Loop throuh the array
 	for _,num := range sent_to{
 		params := &openapi.CreateMessageParams{}
 		// Set the numbers
-		params.SetTo("whatsapp:" + num)
-		params.SetFrom("whatsapp:" + FROM)
+		params.SetTo(num)
+		params.SetFrom(FROM)
 		// Set the body
 		params.SetBody("Hello World")
 		_, err := client.Api.CreateMessage(params)
