@@ -13,20 +13,20 @@ import (
 
 func ScrapeTable() {
 	// Request the HTML page.
-	res, err := http.Get("https://www.the-numbers.com/box-office-records/worldwide/all-movies/cumulative/all-time")
+	res, err := http.Get("https://www.bbc.com/sport/football/spanish-la-liga/table")
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
-		log.Fatalf("Status code error: %d %s", res.StatusCode, res.Status)
+		log.Printf("Status code error: %d %s", res.StatusCode, res.Status)
 	}
 
 	// Load the HTML document
 	doc, err := goquery.NewDocumentFromReader(res.Body)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
 
 	m1 := make(map[string]string)
@@ -62,11 +62,11 @@ func ScrapeTable() {
 				// Write inside the file
 				f, err := os.OpenFile("data.json", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 				if err != nil {
-					panic(err)
+					log.Println(err)
 				}
 				defer f.Close()
 				if _, err = f.Write(data); err != nil {
-					panic(err)
+					log.Println(err)
 				}
 			})
 
