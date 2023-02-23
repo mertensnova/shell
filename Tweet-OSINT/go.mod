@@ -1,4 +1,4 @@
-module tweet/scraper
+module OSINT/tweet
 
 go 1.19
 
