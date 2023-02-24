@@ -54,7 +54,7 @@ func RemoveDuplicates(header []string) []string {
 		check[val] = 1
 	}
 
-	for letter, _ := range check {
+	for letter := range check {
 		res = append(res, letter)
 	}
 
@@ -84,29 +84,28 @@ func WriteToCSV(data []map[string]string, header []string) {
 	f.Close()
 }
 
-func WriteToJSON(data []map[string]string) {
-	// Write inside the file
-	for i := 0; i < len(data); i++ {
-		byte, err := json.Marshal(data[i])
+func WriteToJSON(data map[string]string) {
 
-		if err != nil {
-			fmt.Printf("Error: %s", err.Error())
-		}
-		f, err := os.OpenFile("data.json", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
-		if err != nil {
-			log.Println(err)
-		}
-		defer f.Close()
-		if _, err = f.Write(byte); err != nil {
-			log.Println(err)
-		}
+	byte, err := json.Marshal(data)
+
+	if err != nil {
+		fmt.Printf("Error: %s", err.Error())
 	}
+	f, err := os.OpenFile("data.json", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		log.Println(err)
+	}
+	defer f.Close()
+	if _, err = f.Write(byte); err != nil {
+		log.Println(err)
+	}
+
 }
 
 func ScrapeTable() {
 
 	data_map := make(map[string]string)
-	var data_array []map[string]string
+	data_array := make([]map[string]string, len(data_map))
 	var header []string
 
 	// Request the HTML page.
@@ -140,18 +139,20 @@ func ScrapeTable() {
 							})
 						})
 					})
+
 					// Save the body and head inside a map
-					data_map[header[index]] = titlebody.Text()
-					// WriteToCSV(data_array, header)
+					data_map[header[index]] = fmt.Sprintf("%s", titlebody.Text())
+					fmt.Println(data_map)
 				})
-				//  Append the map in an array
 				data_array = append(data_array, data_map)
 			})
-
 		})
-
-		WriteToJSON(data_array)
 	})
+
+	// fmt.Println(RemoveDuplicates(header))
+	// for _, v := range RemoveDuplicates(header) {
+	// 	data_map
+	// }
 }
 
 func main() {
