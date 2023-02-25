@@ -12,61 +12,16 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-type Writer struct {
-	w      *csv.Writer
-	header []string
-}
+type Data map[string]interface{}
 
-func NewWriter(w *csv.Writer, header []string) *Writer {
-	return &Writer{
-		w:      w,
-		header: header,
-	}
-}
+var myMapSlice []Data
 
-func (w *Writer) WriteHeader() error {
-	return w.w.Write(w.header)
-}
-
-func (w *Writer) Write(record map[string]string) error {
-	s := make([]string, len(w.header))
-	for i, name := range w.header {
-		s[i] = record[name]
-	}
-	return w.w.Write(s)
-}
-
-func (w *Writer) WriteAll(records []map[string]string) error {
-	for _, record := range records {
-		err := w.Write(record)
-		if err != nil {
-			return err
-		}
-	}
-	w.w.Flush()
-	return w.w.Error()
-}
-
-func RemoveDuplicates(header []string) []string {
-	check := make(map[string]int)
-	res := make([]string, 0)
-	for _, val := range header {
-		check[val] = 1
-	}
-
-	for letter := range check {
-		res = append(res, letter)
-	}
-
-	return res
-}
-
-func WriteToCSV(data []map[string]string, header []string) {
+func WriteToCSV(data map[string]string, header []string) {
 	f, err := os.OpenFile("data.csv", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		log.Fatalf("failed creating file: %s", err)
 	}
-
+	data_array := []map[string]string{data}
 	unique_headers := RemoveDuplicates(header)
 	w := NewWriter(csv.NewWriter(f), unique_headers)
 
@@ -75,7 +30,7 @@ func WriteToCSV(data []map[string]string, header []string) {
 		log.Fatal(err)
 	}
 
-	err = w.WriteAll(data)
+	err = w.WriteAll(data_array)
 
 	if err != nil {
 		log.Fatalln(err)
@@ -103,10 +58,9 @@ func WriteToJSON(data map[string]string) {
 }
 
 func ScrapeTable() {
-
 	data_map := make(map[string]string)
-	data_array := make([]map[string]string, len(data_map))
 	var header []string
+	// var bod []string
 
 	// Request the HTML page.
 	res, err := http.Get("https://www.the-numbers.com/box-office-records/worldwide/all-movies/cumulative/all-time")
@@ -139,20 +93,18 @@ func ScrapeTable() {
 							})
 						})
 					})
-
 					// Save the body and head inside a map
-					data_map[header[index]] = fmt.Sprintf("%s", titlebody.Text())
-					fmt.Println(data_map)
+
+					data_map[header[index]] = fmt.Sprintf(titlebody.Text())
 				})
-				data_array = append(data_array, data_map)
+
+				WriteToJSON(data_map)
+				WriteToCSV(data_map, header)
 			})
+
 		})
 	})
 
-	// fmt.Println(RemoveDuplicates(header))
-	// for _, v := range RemoveDuplicates(header) {
-	// 	data_map
-	// }
 }
 
 func main() {
