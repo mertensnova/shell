@@ -15,7 +15,7 @@ func main() {
 	start := time.Now()
 
 	// Request the HTML page.
-	res, err := http.Get("https://datatables.net/examples/styling/display.html")
+	res, err := http.Get("https://www.the-numbers.com/weekend-box-office-chart")
 	if err != nil {
 		log.Println(err)
 	}
@@ -38,19 +38,14 @@ func main() {
 	doc.Find("table").Find("thead").Find("tr").Each(func(i int, s *goquery.Selection) {
 		s.Find("th").Each(func(i int, s *goquery.Selection) {
 			records[0] = append(records[0], s.Text())
-			// records[i+1] = append(records[i+1], s.Text())
 		})
 	})
-	doc.Find("table").Find("tbody").Find("tr").Each(func(i int, s *goquery.Selection) {
-		// strings.Split(s.Find("td").Text(), "  ")
-		records[i+1] = append(records[i+1], s.Find("td").Text())
-		// records = append(records, strings.Split(s.Find("td").Text(), "  "))
-		// fmt.Println(res2)
-		// s.Find("td").Each(func(i int, s *goquery.Selection) {
-		// })
 
+	doc.Find("table").Find("tbody").Find("tr").Each(func(ix int, s *goquery.Selection) {
+		s.Find("td").Each(func(i int, s *goquery.Selection) {
+			records[ix+1] = append(records[ix+1], s.Text())
+		})
 	})
-
 
 	f, err := os.OpenFile("data.csv", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
@@ -59,7 +54,6 @@ func main() {
 
 	w := csv.NewWriter(f)
 	w.WriteAll(records)
-	fmt.Println(records)
 
 	elapsed := time.Since(start)
 	fmt.Printf("\n\nTime took %s", elapsed)
