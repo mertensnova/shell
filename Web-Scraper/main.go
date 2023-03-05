@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -14,8 +15,11 @@ import (
 func main() {
 	start := time.Now()
 
+	url := flag.String("url", "http://example.com/", "URL of the website you scrape")
+	flag.Parse()
+
 	// Request the HTML page.
-	res, err := http.Get("https://www.the-numbers.com/weekend-box-office-chart")
+	res, err := http.Get(*url)
 	if err != nil {
 		log.Println(err)
 	}
@@ -40,6 +44,7 @@ func main() {
 			records[0] = append(records[0], s.Text())
 		})
 	})
+	// FP3UrH$nfmu57gz
 
 	doc.Find("table").Find("tbody").Find("tr").Each(func(ix int, s *goquery.Selection) {
 		s.Find("td").Each(func(i int, s *goquery.Selection) {
