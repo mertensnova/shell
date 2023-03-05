@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"log"
 	"net/smtp"
@@ -36,7 +37,10 @@ func ReadFile(file string) [][]string {
 
 func main() {
 
-	to := ReadFile("./emails.txt")
+	file_name := flag.String("file", "emails.txt", "The name of the file")
+	flag.Parse()
+	fmt.Println(*file_name)
+	to := ReadFile(*file_name)
 	bufferReader := bufio.NewReader(os.Stdin)
 	from := os.Getenv("FROM")
 	passwd := os.Getenv("PASSWD")

@@ -35,31 +35,5 @@ func main() {
 	for _, item := range videoMatchSlice {
 		log.Println("Video found : ", item)
 	}
-
 }
 
-// doc, err := goquery.NewDocumentFromReader(res.Body)
-// if err != nil {
-// 	log.Println(err)
-// }
-// doc.Find("script#__NEXT_DATA__")
-// fmt.Println(reflect.TypeOf(doc.Find("script").Text()))
-// // fmt.Println(doc.Find("script").Text())
-// // re.FindAllString()
-// fmt.Println(re.FindAllString(doc.Find("script").Text(), 100))
-// // fmt.Println(types.)
-// out, err := os.Create("output.txt")
-// if err != nil {
-// 	log.Fatalln(err)
-// }
-// defer out.Close()
-
-// resp, err := http.Get("view-source:" + url)
-// defer resp.Body.Close()
-
-// n, err1 := io.Copy(out, resp.Body)
-// if err1 != nil {
-// 	log.Fatalln(err1)
-// }
-
-// fmt.Println(n)

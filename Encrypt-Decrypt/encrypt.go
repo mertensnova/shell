@@ -70,6 +70,7 @@ func main() {
 	start := time.Now()
 
 	folder_name := flag.String("path", "./test", "The folder you want to encrypt")
+	flag.Parse()
 
 	key := GenerateKey()
 	Encrypt(*folder_name, key)

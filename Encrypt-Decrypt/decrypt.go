@@ -67,6 +67,7 @@ func main() {
 
 	folder_name := flag.String("path", "./test", "The folder you want to decrypt")
 	key_file := flag.String("key", "key.key", "The name of the key file")
+	flag.Parse()
 	key := GetKey(*key_file)
 
 	Decrypt(*folder_name, key)
