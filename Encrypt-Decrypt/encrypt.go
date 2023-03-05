@@ -3,7 +3,9 @@ package main
 import (
 	"bytes"
 	"crypto/aes"
+	"crypto/rand"
 	"encoding/hex"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -19,8 +21,22 @@ func PKCS5Padding(src []byte, blockSize int) []byte {
 	return append(src, padtext...)
 }
 
-func Encrypt() {
-	entries, err := ioutil.ReadDir("./test")
+func GenerateKey() string {
+	f, err := os.Create("key.key")
+	key := make([]byte, 16)
+
+	_, err = rand.Read(key)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	f.WriteString(hex.EncodeToString(key))
+
+	return hex.EncodeToString(key)
+}
+
+func Encrypt(folder string, key string) {
+	entries, err := ioutil.ReadDir(folder)
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -30,7 +46,7 @@ func Encrypt() {
 
 	for _, v := range files {
 		content, err := os.ReadFile("./test/" + v)
-		c, err := aes.NewCipher([]byte("this_must_be_of_32_byte_length!!"))
+		c, err := aes.NewCipher([]byte(key))
 
 		if err != nil {
 			log.Fatalln(err)
@@ -52,7 +68,13 @@ func Encrypt() {
 
 func main() {
 	start := time.Now()
-	Encrypt()
+
+	folder_name := flag.String("path", "./test", "The folder you want to encrypt")
+
+	key := GenerateKey()
+	Encrypt(*folder_name, key)
+
 	elapsed := time.Since(start)
+
 	fmt.Printf("\n\nTime took %s", elapsed)
 }
