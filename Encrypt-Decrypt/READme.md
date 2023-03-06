@@ -1,0 +1,2 @@
+I built a simple ransomware in Golang. It generates a key then save it in a file then encrypts all the files using the key that was saved. The decrypted file gets the key from the file and then decrypts the encrypted files.
+Github
