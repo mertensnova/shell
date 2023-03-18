@@ -1,12 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
 	"image/jpeg"
 	"image/png"
-	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -73,10 +72,9 @@ func DownloadImage(url string, path string) {
 	switch filepath.Ext(path) {
 	case ".png":
 		PNGHandler(path, f, res)
-	case ".jpeg":
+	case ".jpg":
 		JPEGHandler(path, f, res)
 	}
-
 }
 
 func main() {
@@ -86,8 +84,6 @@ func main() {
 	flag.Parse()
 	png_pattern := regexp.MustCompile(`[A-Z0-9a-z\.\/_-]*(\.png)`)
 	jpeg_pattern := regexp.MustCompile(`[A-Z0-9a-z\.\/_-]*(\.jpeg)`)
-
-	out, err := os.Create("tmp.txt")
 
 	res, err := http.Get(*url)
 	if err != nil {
@@ -99,34 +95,18 @@ func main() {
 	}
 
 	defer res.Body.Close()
-
-	io.Copy(out, res.Body)
+	bytes, _ := ioutil.ReadAll(res.Body)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	file, err := os.Open("tmp.txt")
-	if err != nil {
-		log.Fatal(err)
+	if png_pattern.MatchString(string(bytes[:])) {
+		DownloadImage(*url, path.Clean(png_pattern.FindString(string(bytes[:]))))
+	} else if jpeg_pattern.MatchString(string(bytes[:])) {
+		DownloadImage(*url, path.Clean(jpeg_pattern.FindString(string(bytes[:]))))
 	}
 
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		if png_pattern.MatchString(scanner.Text()) {
-			DownloadImage(*url, path.Clean(png_pattern.FindString(scanner.Text())))
-		} else if jpeg_pattern.MatchString(scanner.Text()) {
-			DownloadImage(*url, path.Clean(jpeg_pattern.FindString(scanner.Text())))
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	os.Remove("./tmp.txt")
-	defer out.Close()
 	elapsed := time.Since(start)
 	fmt.Printf("\n\nTime took %s", elapsed)
 }
