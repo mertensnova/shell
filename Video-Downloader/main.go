@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 
-	"github.com/PuerkitoBio/goquery"
+	"golang.org/x/net/html"
 )
 
 func main() {
@@ -21,13 +23,30 @@ func main() {
 		log.Printf("Status code error: %d %s", res.StatusCode, res.Status)
 	}
 
-	// Load the HTML document
-	doc, err := goquery.NewDocumentFromReader(res.Body)
+	bytes, _ := ioutil.ReadAll(res.Body)
+
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 
-	fmt.Println(doc)
+	doc, err := html.Parse(strings.NewReader(string(bytes[:])))
+	if err != nil {
+		log.Fatal(err)
+	}
+	var f func(*html.Node)
+	f = func(n *html.Node) {
+		if n.Type == html.ElementNode && n.Data == "a" {
+			for _, a := range n.Attr {
+				if a.Key == "href" {
+					fmt.Println(a.Val)
+					break
+				}
+			}
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			f(c)
+		}
+	}
 
-	fmt.Println("Hello World")
+	f(doc)
 }
