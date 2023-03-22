@@ -13,14 +13,14 @@ import (
 func main() {
 
 	// Request the HTML page.
-	res, err := http.Get("https://www.ted.com/talks/johan_rockstrom_10_years_to_transform_the_future_of_humanity_or_destabilize_the_planet")
+	res, err := http.Get("https://www.pexels.com/search/videos/nature/")
 	if err != nil {
 		log.Println(err)
 	}
 
 	defer res.Body.Close()
 	if res.StatusCode != 200 {
-		log.Printf("Status code error: %d %s", res.StatusCode, res.Status)
+		log.Printf("Status code error: %s", res.Status)
 	}
 
 	bytes, _ := ioutil.ReadAll(res.Body)
@@ -33,6 +33,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	var f func(*html.Node)
 	f = func(n *html.Node) {
 		if n.Type == html.ElementNode && n.Data == "a" {
