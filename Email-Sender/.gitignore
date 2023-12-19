@@ -1,5 +1,0 @@
-.env*
-emails.txt
-.env.example
-.env.local
-.env.staging
