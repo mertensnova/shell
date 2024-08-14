@@ -6,47 +6,20 @@
 #include <unistd.h>
 
 #define BUFFER_SIZE 1024
-void path_get(char *cmd);
 
-char *parse_cmd(char *cmd);
+char *get_input() {
+  char *input = malloc(sizeof(char) * 100);
+  char *s = fgets(input, 100, stdin);
+  input[strlen(input) - 1] = '\0';
 
-int main(void) {
-
-  while (true) {
-
-    printf("\n$ ");
-    char input[100];
-    char *s = fgets(input, 100, stdin);
-
-    input[strlen(input) - 1] = '\0';
-
-    path_get(input);
-  }
-  return 0;
+  return input;
 };
-
-char *parse_cmd(char *cmd) {
-  size_t size = sizeof(&cmd) / sizeof(cmd[0]);
-  for (int i = 0; size > 0; ++i) {
-    if (cmd[i] == ' ') {
-      cmd[i] = '\0';
-      return cmd;
-    }
-  };
-
-  return cmd;
-};
-
-void path_get(char *cmd) {
+void exe_cmd(char *cmd) {
   if (strlen(cmd) == 0) {
     return;
   };
-
-  cmd = parse_cmd(cmd);
-
   char buffer[BUFFER_SIZE];
   int fd[2];
-  int status;
   int fd_pipe = pipe(fd);
 
   pid_t cpid = fork();
@@ -64,7 +37,6 @@ void path_get(char *cmd) {
     buffer[size - 1] = '\0';
     printf("%s", buffer);
   };
-
   if (kill(cpid, SIGTERM) == 0) {
     return;
   } else {

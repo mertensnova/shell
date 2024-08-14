@@ -1,4 +1,4 @@
- - [] REPL
- - [] `exit` builtin function
- - [] `pwd` builtin function
- - [] accepting arguments
+ - [X] REPL
+ - [ ] `exit` builtin function
+ - [ ] `pwd` builtin function
+ - [ ] accepting arguments
