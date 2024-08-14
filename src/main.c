@@ -11,9 +11,8 @@ int main(void) {
     printf("\n$ ");
     input = get_input();
     if (isbuiltin(input)) {
-    
-        continue;
-    }
+      continue;
+    };
     exe_cmd(input);
   } while (true);
   return 0;
