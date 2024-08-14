@@ -1,10 +1,7 @@
 #include "../include/builtin.h"
+#include <stdlib.h>
 
 
 
-void exit(int status){
-
-
-
-    exit(status);
-}
+void nyx_exit(int status) { 
+    exit(status); }

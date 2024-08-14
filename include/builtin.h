@@ -3,7 +3,7 @@
 
 
 
-void exit(int status);
+void nyx_exit(int status);
 
 
 #endif

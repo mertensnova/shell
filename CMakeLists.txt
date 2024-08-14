@@ -9,6 +9,7 @@ set(SOURCES
     src/main.c
     src/builtin.c
     src/utils.c
+    src/parser.c
 )
 
 add_executable(nyxshell ${SOURCES})
