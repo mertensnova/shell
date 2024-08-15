@@ -18,11 +18,15 @@ char *get_input() {
 
 char *trim_space(char *string) {
   size_t size = sizeof(&string) / sizeof(string[0]);
-  for (size_t i = 0; i < size - 1; ++i) {
-    if (isspace(string[i])) {
-      string[i] = string[i + 1];
-    }
-  };
+  int i = 0;
+  while (isspace(string[i]) && i < size) {
+    char a, tmp;
+    tmp = string[i];
+    a = string[i + 1];
+    string[i] = a;
+    string[i + 1] = tmp;
+    i++;
+  }
   return string;
 };
 void exe_cmd(char *cmd) {

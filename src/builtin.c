@@ -13,7 +13,6 @@ void n_echo(char *messeage) { printf("%s\n", messeage); };
 void n_type(char *arg) {
   size_t size = sizeof(builtin) / sizeof(builtin[0]);
 
-  printf("%s is a shell builtin", trim_space(arg));
   for (size_t i = 0; i < size; ++i) {
     size_t arg_size = sizeof(&arg) / sizeof(arg[0]);
     size_t builtin_size = sizeof(&builtin[i]) / sizeof(builtin[i][0]);
@@ -25,5 +24,5 @@ void n_type(char *arg) {
       return;
     }
   };
-  // printf("%s: not found", arg);
+  printf("%s: not found", arg);
 }
