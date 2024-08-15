@@ -8,7 +8,7 @@
 int main(void) {
   char *input;
   do {
-    printf("\n$ ");
+    printf("\n\n$ ");
     input = get_input();
     if (isbuiltin(input)) {
       continue;

@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,6 +14,16 @@ char *get_input() {
   input[strlen(input) - 1] = '\0';
 
   return input;
+};
+
+char *trim_space(char *string) {
+  size_t size = sizeof(&string) / sizeof(string[0]);
+  for (size_t i = 0; i < size - 1; ++i) {
+    if (isspace(string[i])) {
+      string[i] = string[i + 1];
+    }
+  };
+  return string;
 };
 void exe_cmd(char *cmd) {
   if (strlen(cmd) == 0) {

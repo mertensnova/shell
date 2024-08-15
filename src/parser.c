@@ -7,7 +7,9 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+
 bool isbuiltin(char *input) {
+  char *s;
   size_t size = strlen(input);
   char cmd[100];
 
@@ -20,21 +22,31 @@ bool isbuiltin(char *input) {
   };
 
   if (strncmp("exit", cmd, 4) == 0) {
-    int n = get_digit(input);
+    s = get_args(input, 4);
+    int n = atoi(s);
     nyx_exit(n);
     return true;
   };
+  if (strncmp("echo", cmd, 4) == 0) {
+    s = get_args(input, 4);
+    n_echo(s);
+    return true;
+  };
+
+  if (strncmp("type", cmd, 4) == 0) {
+    s = get_args(input, 4);
+        n_type(s);
+    return true;
+  };
+
   return false;
 };
 
-int get_digit(char *input) {
+char *get_args(char *input, int n) {
   size_t size = strlen(input);
-  char digit[10];
-
-  for (size_t i = 4; i < size; ++i) {
-    digit[i - 4] = input[i];
+  char *args = malloc(sizeof(char) * 20);
+  for (size_t i = n; i < size; ++i) {
+    args[i - n] = input[i];
   };
-
-  int num = atoi(digit);
-  return num;
+  return args;
 };
