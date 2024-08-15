@@ -16,6 +16,19 @@ char *get_input() {
   return input;
 };
 
+char *get_path(char *cmd) {
+  char path[256] = "/usr/bin/";
+  strcat(path, cmd);
+  pid_t pid = fork();
+
+  if (pid == 0) {
+    char *argv[] = {path, NULL};
+    if (execvp(path, argv) == -1)
+      perror("execvp");
+  };
+
+  return "";
+};
 char *trim_space(char *string) {
   size_t size = sizeof(&string) / sizeof(string[0]);
   int i = 0;

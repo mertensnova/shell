@@ -7,7 +7,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-
 bool isbuiltin(char *input) {
   char *s;
   size_t size = strlen(input);
@@ -35,7 +34,8 @@ bool isbuiltin(char *input) {
 
   if (strncmp("type", cmd, 4) == 0) {
     s = get_args(input, 4);
-        n_type(s);
+    if(!n_type(s))
+        get_path(s);
     return true;
   };
 
