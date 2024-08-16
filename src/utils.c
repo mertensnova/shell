@@ -16,18 +16,28 @@ char *get_input() {
   return input;
 };
 
-char *get_path(char *cmd) {
+void get_path(char *cmd) {
+  int fd[2];
+  int fd_pipe = pipe(fd);
+
+  char buffer[BUFFER_SIZE];
   char path[256] = "/usr/bin/";
   strcat(path, cmd);
   pid_t pid = fork();
 
   if (pid == 0) {
-    char *argv[] = {path, NULL};
-    if (execvp(path, argv) == -1)
-      perror("execvp");
-  };
+    dup2(fd[1], STDOUT_FILENO);
+    char *args[] = {"which", cmd, NULL};
 
-  return "";
+    int s = dup(STDERR_FILENO);
+    execvp("which", args);
+    fflush(stderr);
+    printf("%s: command not found", cmd);
+  } else {
+    size_t size = read(fd[0], buffer, BUFFER_SIZE);
+    buffer[size - 1] = '\0';
+    printf("%s", buffer);
+  };
 };
 char *trim_space(char *string) {
   size_t size = sizeof(&string) / sizeof(string[0]);
