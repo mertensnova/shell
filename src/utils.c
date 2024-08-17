@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <fcntl.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,7 +7,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 2024
 
 char *get_input() {
   char *input = malloc(sizeof(char) * 100);
@@ -28,17 +29,26 @@ void get_path(char *cmd) {
   if (pid == 0) {
     dup2(fd[1], STDOUT_FILENO);
     char *args[] = {"which", cmd, NULL};
+    int nfd[3];
+    int pip = pipe(nfd);
+    pid_t npid = fork();
+    if (npid == 0) {
+      dup2(nfd[2], STDERR_FILENO);
+      execvp("which", args);
+    } else {
+      printf("%s: not found", cmd);
+      return;
+    };
 
-    int s = dup(STDERR_FILENO);
-    execvp("which", args);
-    fflush(stderr);
-    printf("%s: command not found", cmd);
   } else {
     size_t size = read(fd[0], buffer, BUFFER_SIZE);
     buffer[size - 1] = '\0';
-    printf("%s", buffer);
+    printf("%s is %s", cmd, buffer);
+    return;
   };
+  return;
 };
+
 char *trim_space(char *string) {
   size_t size = sizeof(&string) / sizeof(string[0]);
   int i = 0;
