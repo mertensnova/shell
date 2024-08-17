@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(nyxshell)
+project(microshell)
 
 set(CMAKE_C_STANDARD 11)
 
@@ -12,5 +12,5 @@ set(SOURCES
     src/parser.c
 )
 
-add_executable(nyxshell ${SOURCES})
+add_executable(microshell ${SOURCES})
 

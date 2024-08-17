@@ -24,18 +24,18 @@ bool isbuiltin(char *input) {
   if (strncmp("exit", cmd, 4) == 0) {
     s = get_args(input, 4);
     int n = atoi(s);
-    nyx_exit(n);
+    micro_exit(n);
     return true;
   };
   if (strncmp("echo", cmd, 4) == 0) {
     s = get_args(input, 4);
-    n_echo(s);
+    micro_echo(s);
     return true;
   };
 
   if (strncmp("type", cmd, 4) == 0) {
     s = get_args(input, 4);
-    if(!n_type(s))
+    if(!micro_type(s))
         get_path(s);
     return true;
   };

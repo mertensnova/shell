@@ -5,7 +5,7 @@
 
 extern const char *builtin[];
 
-bool n_type(char *arg);
-void nyx_exit(int status);
-void n_echo(char *messeage);
+bool micro_type(char *arg);
+void micro_exit(int status);
+void micro_echo(char *messeage);
 #endif

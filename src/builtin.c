@@ -7,10 +7,10 @@
 
 const char *builtin[] = {"echo", "type", "exit"};
 
-void nyx_exit(int status) { exit(status); }
-void n_echo(char *messeage) { printf("%s\n", messeage); };
+void micro_exit(int status) { exit(status); }
+void micro_echo(char *messeage) { printf("%s\n", messeage); };
 
-bool n_type(char *arg) {
+bool micro_type(char *arg) {
   size_t size = sizeof(builtin) / sizeof(builtin[0]);
 
   for (size_t i = 0; i < size; ++i) {
