@@ -1,6 +1,7 @@
 #include "../include/parser.h"
-#include "../include/utils.h"
 #include "../include/builtin.h"
+#include "../include/utils.h"
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,8 +36,8 @@ bool isbuiltin(char *input) {
 
   if (strncmp("type", cmd, 4) == 0) {
     s = get_args(input, 4);
-    if(!micro_type(s))
-        get_path(s);
+    if (!micro_type(s))
+      get_path(s);
     return true;
   };
 
@@ -45,9 +46,33 @@ bool isbuiltin(char *input) {
 
 char *get_args(char *input, int n) {
   size_t size = strlen(input);
-  char *args = malloc(sizeof(char) * 20);
-  for (size_t i = n; i < size; ++i) {
-    args[i - n] = input[i];
+  const char *args[100] = {};
+  char word[10];
+  size_t size1 = strlen(*args);
+  char *aa;
+  int k = 0;
+  int x = 0;
+  for (size_t i = 0; i < size; ++i) {
+    if (isspace(input[i]) == 0) {
+      // printf("%c", input[i]);
+      word[k] = input[i];
+      k++;
+    } else {
+
+      word[k + 1] = '\0';
+      args[x] = word;
+      k = 0;
+      x++;
+
+      printf("%s\n", word);
+      memset(word, 0, strlen(word));
+    }
   };
-  return args;
+
+  for (size_t i = 0; i < x; ++i) {
+    // printf("%s", *args);
+  }
+  // printf("%s\n", *args);
+
+  return aa;
 };
