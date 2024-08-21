@@ -47,32 +47,25 @@ bool isbuiltin(char *input) {
 char *get_args(char *input, int n) {
   size_t size = strlen(input);
   const char *args[100] = {};
-  char word[10];
+  char word[20];
   size_t size1 = strlen(*args);
   char *aa;
   int k = 0;
   int x = 0;
-  for (size_t i = 0; i < size; ++i) {
-    if (isspace(input[i]) == 0) {
+  for (size_t i = 0; i < size; i++) {
+    if (isspace(input[i]) == 0 && input[i] != '\0') {
       // printf("%c", input[i]);
       word[k] = input[i];
       k++;
     } else {
+      word[k] = '\n';
+      k++;
 
-      word[k + 1] = '\0';
-      args[x] = word;
-      k = 0;
-      x++;
-
-      printf("%s\n", word);
-      memset(word, 0, strlen(word));
-    }
+    printf("%s", word);
+    };
   };
 
-  for (size_t i = 0; i < x; ++i) {
-    // printf("%s", *args);
-  }
-  // printf("%s\n", *args);
+  // printf("%s",args[0]);
 
   return aa;
 };
