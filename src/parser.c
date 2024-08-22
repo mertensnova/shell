@@ -38,6 +38,8 @@ bool isbuiltin(char *input) {
     char **s = get_args(input);
     if (!micro_type(s[1]))
       get_path(s[1]);
+    
+
     return true;
   };
 
