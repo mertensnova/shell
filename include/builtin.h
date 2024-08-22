@@ -7,6 +7,6 @@ extern const char *builtin[];
 
 bool micro_type(char *arg);
 void micro_exit(int status);
-void micro_echo(char *messeage);
+void micro_echo(char **messeage);
 
 #endif

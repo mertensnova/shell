@@ -8,7 +8,18 @@
 const char *builtin[] = {"echo", "type", "exit"};
 
 void micro_exit(int status) { exit(status); }
-void micro_echo(char *messeage) { printf("%s\n", messeage); };
+void micro_echo(char **messeage) {
+  size_t size = sizeof(messeage);
+  for (size_t i = 1; i < size; ++i) {
+
+    if (messeage[i] == NULL) {
+      continue;
+    };
+
+    printf("%s", messeage[i]);
+    printf(" ");
+  }
+};
 
 bool micro_type(char *arg) {
   size_t size = sizeof(builtin) / sizeof(builtin[0]);

@@ -10,11 +10,11 @@ int main(void) {
   do {
     printf("\n\n$ ");
     input = get_input();
-    //   if (isbuiltin(input)) {
-    //   continue;
-    //};
-    get_args(input, 3);
-    // exe_cmd(input);
+       if (isbuiltin(input)) {
+       continue;
+    };
+//    get_args(input, 3);
+ exe_cmd(input);
   } while (true);
   return 0;
 };

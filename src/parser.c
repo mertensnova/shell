@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 bool isbuiltin(char *input) {
-  char *s;
+  // char *s;
   size_t size = strlen(input);
   char cmd[100];
 
@@ -23,49 +23,61 @@ bool isbuiltin(char *input) {
   };
 
   if (strncmp("exit", cmd, 4) == 0) {
-    s = get_args(input, 4);
-    int n = atoi(s);
+    char **s = get_args(input, 4);
+    int n = atoi(s[1]);
     micro_exit(n);
     return true;
   };
   if (strncmp("echo", cmd, 4) == 0) {
-    s = get_args(input, 4);
+    char **s = get_args(input, 4);
     micro_echo(s);
     return true;
   };
 
   if (strncmp("type", cmd, 4) == 0) {
-    s = get_args(input, 4);
-    if (!micro_type(s))
-      get_path(s);
+    // s = *get_args(input, 4);
+    // if (!micro_type(s))
+    // get_path(s);
     return true;
   };
 
   return false;
 };
 
-char *get_args(char *input, int n) {
+char **get_args(char *input, int n) {
   size_t size = strlen(input);
-  const char *args[100] = {};
-  char word[20];
-  size_t size1 = strlen(*args);
-  char *aa;
+  char **args;
+  args = (char **)malloc(100 * sizeof(char *));
   int k = 0;
-  int x = 0;
+  int j = 0;
+  char *word = malloc(sizeof(char) * (size + 1)); // +1 for null terminator
   for (size_t i = 0; i < size; i++) {
-    if (isspace(input[i]) == 0 && input[i] != '\0') {
-      // printf("%c", input[i]);
-      word[k] = input[i];
-      k++;
+    if (input[i] == '"') {
+      continue;
+    }
+    if (isspace(input[i]) == 0) {
+      word[k++] = input[i];
     } else {
-      word[k] = '\n';
-      k++;
-
-    printf("%s", word);
+      word[k] = '\0';
+      args[j] = (char *)malloc(sizeof(char) * k + 1);
+      strcpy(args[j], word);
+      k = 0;
+      j++;
     };
   };
 
-  // printf("%s",args[0]);
+  if (k > 0) {
+    word[k] = '\0';
+    args[j] = (char *)malloc(sizeof(char) * (k + 1));
+    if (args[j] == NULL) {
+      perror("Failed to allocate memory");
+      exit(EXIT_FAILURE);
+    }
+    strcpy(args[j], word);
+    j++;
+  }
 
-  return aa;
+  free(word);
+
+  return args;
 };
