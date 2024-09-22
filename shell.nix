@@ -3,11 +3,11 @@ let
 in
   pkgs.mkShell {
     packages = [
-     pkgs.gdb
+    pkgs.gdb
     pkgs.cmake
     pkgs.pkg-config
     pkgs.meson
+    pkgs.gtest
     pkgs.ninja
-    #pkgs.nlohmann_json
 ];
   }

@@ -9,6 +9,10 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 bool isbuiltin(char *input) {
   // char *s;
   size_t size = strlen(input);
@@ -43,7 +47,6 @@ bool isbuiltin(char *input) {
 
   return false;
 };
-
 char **get_args(char *input) {
   size_t size = strlen(input);
   char **args;
@@ -81,3 +84,6 @@ char **get_args(char *input) {
 
   return args;
 };
+#ifdef __cplusplus
+}
+#endif
