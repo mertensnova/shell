@@ -10,11 +10,15 @@ FetchContent_MakeAvailable(googletest)
 add_library(GTest::GTest INTERFACE IMPORTED)
 target_link_libraries(GTest::GTest INTERFACE gtest_main)
 
-add_executable(parser_test parser_test.cc ../src/parser.c)
+add_executable(parser_test parser_test.cc 
+    ../src/parser.c
+    ../src/builtin.c
+    ../src/utils.c
+)
 
 target_link_libraries(parser_test
  PRIVATE
   GTest::GTest
-  )
+)
 
 add_test(NAME parser_test COMMAND parser_test)

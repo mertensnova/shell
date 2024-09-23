@@ -8,6 +8,10 @@
 #include <unistd.h>
 
 #define BUFFER_SIZE 2024
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 char *get_input() {
   char *input = malloc(sizeof(char) * 100);
@@ -91,3 +95,8 @@ void exe_cmd(char *cmd) {
     perror("Error terminating child process");
   };
 };
+
+#ifdef __cplusplus
+}
+#endif
+

@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 const char *builtin[] = {"echo", "type", "exit"};
 
 void micro_exit(int status) { exit(status); }
@@ -37,3 +41,6 @@ bool micro_type(char *arg) {
 
   return false;
 }
+#ifdef __cplusplus
+}
+#endif
