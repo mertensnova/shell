@@ -40,7 +40,7 @@ bool isbuiltin(char *input) {
 
   if (strncmp("type", cmd, 4) == 0) {
     char **s = get_args(input);
-    if (!micro_type(s[1]))
+    if (!micro_type(s[1])){}
       get_path(s[1]);
     return true;
   };
@@ -84,7 +84,6 @@ char **get_args(char *input) {
 
   return args;
 };
-
 #ifdef __cplusplus
 }
 #endif
