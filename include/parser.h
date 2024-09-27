@@ -1,14 +1,13 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-
 #include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-bool isbuiltin(char* input);
+bool isbuiltin(char *input);
 
 int get_digit(char *input);
 

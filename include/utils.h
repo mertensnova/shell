@@ -14,6 +14,4 @@ void exec(char *string);
 #ifdef __cplusplus
 }
 #endif
-
 #endif
-
