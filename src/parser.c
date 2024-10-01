@@ -9,11 +9,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-bool isbuiltin(char *input) {
+bool isbuiltin(const char *input) {
   // char *s;
   size_t size = strlen(input);
   char cmd[100];
@@ -27,19 +23,22 @@ bool isbuiltin(char *input) {
   };
 
   if (strncmp("exit", cmd, 4) == 0) {
-    char **s = get_args(input);
+    char **s = get_args((char *)input);
     int n = atoi(s[1]);
     micro_exit(n);
     return true;
   };
   if (strncmp("echo", cmd, 4) == 0) {
-    char **s = get_args(input);
+
+    char **s = get_args((char *)input);
+
     micro_echo(s);
     return true;
   };
 
   if (strncmp("type", cmd, 4) == 0) {
-    char **s = get_args(input);
+
+    char **s = get_args((char *)input);
     if (!micro_type(s[1])) {
     }
     get_path(s[1]);
@@ -85,6 +84,3 @@ char **get_args(char *input) {
 
   return args;
 };
-#ifdef __cplusplus
-}
-#endif
