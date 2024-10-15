@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 const char *builtin[] = {"echo", "type", "exit"};
 
 void micro_exit(int status) { exit(status); }

@@ -23,31 +23,28 @@ bool isbuiltin(const char *input) {
   };
 
   if (strncmp("exit", cmd, 4) == 0) {
-    char **s = get_args((char *)input);
-    int n = atoi(s[1]);
+    char *s = get_args(input);
+    int n = atoi(s);
     micro_exit(n);
     return true;
   };
   if (strncmp("echo", cmd, 4) == 0) {
-
-    char **s = get_args((char *)input);
-
+    char *s = get_args(input);
     micro_echo(s);
     return true;
   };
 
   if (strncmp("type", cmd, 4) == 0) {
-
-    char **s = get_args((char *)input);
-    if (!micro_type(s[1])) {
+    char *s = get_args(input);
+    if (!micro_type(s)) {
     }
-    get_path(s[1]);
+    get_path(s);
     return true;
   };
 
   return false;
 };
-char **get_args(char *input) {
+char *get_args(char *input) {
   size_t size = strlen(input);
   char **args;
   args = (char **)malloc(100 * sizeof(char *));

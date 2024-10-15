@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 int main(void) {
+
   char *input;
   do {
     printf("\n\n$ ");
