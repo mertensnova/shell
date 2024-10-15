@@ -3,15 +3,9 @@
 
 #include <stdbool.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
-bool isbuiltin(const char *input);
+bool isbuiltin(char *input);
 int get_digit(char *input);
 char *get_args(char *input);
 
-#ifdef __cplusplus
-}
-#endif
 #endif

@@ -9,7 +9,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-bool isbuiltin(const char *input) {
+bool isbuiltin(char *input) {
   // char *s;
   size_t size = strlen(input);
   char cmd[100];
@@ -30,7 +30,7 @@ bool isbuiltin(const char *input) {
   };
   if (strncmp("echo", cmd, 4) == 0) {
     char *s = get_args(input);
-    micro_echo(s);
+    micro_echo(&s);
     return true;
   };
 
