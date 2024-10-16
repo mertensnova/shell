@@ -10,7 +10,6 @@
 #include <unistd.h>
 
 bool isbuiltin(char *input) {
-  // char *s;
   size_t size = strlen(input);
   char cmd[100];
 
@@ -23,28 +22,31 @@ bool isbuiltin(char *input) {
   };
 
   if (strncmp("exit", cmd, 4) == 0) {
-    char *s = get_args(input);
-    int n = atoi(s);
+    char **s = get_args(input);
+    int n = atoi((char *)s);
     micro_exit(n);
     return true;
   };
   if (strncmp("echo", cmd, 4) == 0) {
-    char *s = get_args(input);
-    micro_echo(&s);
+    char **s = get_args(input);
+    micro_echo(s);
     return true;
   };
 
   if (strncmp("type", cmd, 4) == 0) {
-    char *s = get_args(input);
-    if (!micro_type(s)) {
-    }
-    get_path(s);
+    char **s = get_args(input);
+
+    if (micro_type(s[1]))
+      printf("%s is a shell builtin", s[1]);
+    else
+      get_path(s[1]);
+
     return true;
   };
 
   return false;
 };
-char *get_args(char *input) {
+char **get_args(char *input) {
   size_t size = strlen(input);
   char **args;
   args = (char **)malloc(100 * sizeof(char *));

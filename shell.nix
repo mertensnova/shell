@@ -7,7 +7,6 @@ in
     pkgs.cmake
     pkgs.pkg-config
     pkgs.meson
-    pkgs.gtest
     pkgs.ninja
 ];
   }

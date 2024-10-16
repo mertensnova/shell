@@ -6,6 +6,6 @@
 
 bool isbuiltin(char *input);
 int get_digit(char *input);
-char *get_args(char *input);
+char **get_args(char *input);
 
 #endif
