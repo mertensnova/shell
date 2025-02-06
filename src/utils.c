@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,20 +28,26 @@ void get_path(char *cmd) {
   pid_t pid = fork();
 
   if (pid == 0) {
-    dup2(fd[1], STDOUT_FILENO);
-    char *args[] = {"which", cmd, NULL};
-    int nfd[3];
-    int pip = pipe(nfd);
-    pid_t npid = fork();
-    if (npid == 0) {
-      dup2(nfd[2], STDERR_FILENO);
-      execvp("which", args);
-    } else {
-      printf("%s: not found", cmd);
-      return;
-    };
 
+    dup2(fd[1], 1);
+    char *args[] = {"which", cmd, NULL};
+
+    /*
+  char *args[] = {"which", cmd, NULL};
+  int nfd[2];
+  int pip = pipe(nfd);
+  pid_t npid = fork();
+  if (npid == 0) {
+    dup2(nfd[1], STDERR_FILENO);
+    execvp("which", args);
   } else {
+    printf("%s: not found", cmd);
+    return;
+  };
+  */
+//kill(pid, SIGTERM);
+  } else {
+     dup2(fd[0], 0);
     size_t size = read(fd[0], buffer, BUFFER_SIZE);
     buffer[size - 1] = '\0';
     printf("%s is %s", cmd, buffer);
@@ -91,4 +98,3 @@ void exe_cmd(char *cmd) {
     perror("Error terminating child process");
   };
 };
-
