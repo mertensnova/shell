@@ -35,7 +35,6 @@ bool isbuiltin(char *input) {
 
   if (strncmp("type", cmd, 4) == 0) {
     char **s = get_args(input);
-
     if (micro_type(s[1]))
       printf("%s is a shell builtin", s[1]);
     else

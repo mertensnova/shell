@@ -8,7 +8,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#define BUFFER_SIZE 2024
+#define BUFFER_SIZE 20240
 
 char *get_input() {
   char *input = malloc(sizeof(char) * 100);
@@ -28,10 +28,9 @@ void get_path(char *cmd) {
   pid_t pid = fork();
 
   if (pid == 0) {
-
     dup2(fd[1], 1);
     char *args[] = {"which", cmd, NULL};
-
+    execvp("which", args);
     /*
   char *args[] = {"which", cmd, NULL};
   int nfd[2];
@@ -39,18 +38,18 @@ void get_path(char *cmd) {
   pid_t npid = fork();
   if (npid == 0) {
     dup2(nfd[1], STDERR_FILENO);
-    execvp("which", args);
   } else {
     printf("%s: not found", cmd);
     return;
   };
   */
-//kill(pid, SIGTERM);
+    // kill(pid, SIGTERM);
   } else {
-     dup2(fd[0], 0);
+      fflush(stderr);
     size_t size = read(fd[0], buffer, BUFFER_SIZE);
     buffer[size - 1] = '\0';
-    printf("%s is %s", cmd, buffer);
+    
+    printf("%s is in %s", cmd, buffer);
     return;
   };
   return;
